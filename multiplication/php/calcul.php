@@ -1,3 +1,16 @@
+<?php
+// Chemin vers le fichier texte
+$file = './file';
+
+// Lire le contenu du fichier et le convertir en tableau
+$content = file_get_contents($file);
+$lines = explode("\n", $content);
+$donnees = array();
+foreach ($lines as $line) {
+    $donnees[] = explode(',', $line);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -67,6 +80,10 @@
             text-decoration: none;
             color:#fff;
         }
+        .pair{
+            background-color: #153677;
+            color:white;
+        }
     </style>
 </head>
 <body>
@@ -76,69 +93,46 @@
             <table>
                 <tbody>
                 <?php
-                        $url = $_SERVER['REQUEST_URI'];
-
-                        ///Pour les tableaux à une seule dimension
-                        parse_str(parse_url($url, PHP_URL_QUERY), $params);
-                        $new_params=http_build_query($params);
-                        $suppr_url = "http://www.multiplication.com/suppr.php"."?".$new_params;
-                        $mod_url = "http://www.multiplication.com/modify.php"."?".$new_params;
+                        $new_params=http_build_query($donnees);
+                        $suppr_url = "/multiplication/php/suppr.php?";
+                        $mod_url = "/multiplication/php/modify.php?";
                         $index = 0;
-
-                       
-                        foreach($params as $key => $elt){
-                            if ($key == 'a'){
-                                $a = $elt;
-                            }
-                            if($index==0){}
-                            else{
-                                $c = $key +1;
-                                echo "<tr>
-                                        <td class=\"a\">$a</td>
-                                        <td class=\"a\">$c</td>
-                                        <td class=\"a\">$elt</td>
-                                        <td>
+                        foreach($donnees as $elt){
+                                $result = $elt[0] * $elt[1];
+                                if($elt[0] !== ""){
+                                    if($elt[0]%2 == 0){
+                                        echo "<tr>";
+                                        echo "<td class=\"a pair\">$elt[0]</td>
+                                        <td class=\"a pair\">$elt[1]</td>
+                                        <td class=\"a pair\">$result</td>";
+                                        
+                                    }
+                                    else{
+                                        echo "<tr>";
+                                        echo "<td class=\"a \">$elt[0]</td>
+                                        <td class=\"a \">$elt[1]</td>
+                                        <td class=\"a \">$result</td>";
+                                    }
+                                    echo "<td>
                                             <button class=\"modify button\">
-                                                <a href=\"$mod_url&k=$c&c=$c&na=$a\">Modifier</a>
+                                                <a href=\"$mod_url&k=$index&c=$elt[0]&a=$elt[1]\">Modifier</a>
                                             </button>
                                         </td>
                                         <td>
                                             <button class=\"button\">
-                                                <a href=\"$suppr_url&k=$c\">Supprimer</a>
+                                                <a href=\"$suppr_url&k=$index\">Supprimer</a>
                                             </button>
                                         </td>                               
                                         </tr>";
-                            }
-                        $index++;
+                                }  
+                                $index++;
                         }
-
-                        ///Pour les tableaux à deux dimensions
-                        // parse_str(parse_url($url, PHP_URL_QUERY), $donnees);
-                        // $new_params=http_build_query(array("tab" => $donnees));
-                        // $suppr_url = "http://www.multiplication.com/suppr.php"."?".$new_params;
-                        // foreach($donnees['tab'] as $elt){
-                        //         echo "<tr>
-                        //                 <td class=\"a\">$elt[0]</td>
-                        //                 <td class=\"a\">$elt[1]</td>
-                        //                 <td class=\"a\">$elt[2]</td>
-                        //                 <td>
-                        //                     <button class=\"modify button\">
-                        //                         <a href=\"$mod_url&k=$c&c=$c&na=$a\">Modifier</a>
-                        //                     </button>
-                        //                 </td>
-                        //                 <td>
-                        //                     <button class=\"button\">
-                        //                         <a href=\"$suppr_url&k=$elt[0]\">Supprimer</a>
-                        //                     </button>
-                        //                 </td>                               
-                        //                 </tr>";
-                        // }
                     ?>
                 </tbody>
             </table>
         </div>
     </div>
-   
-   
 </body>
 </html>
+
+

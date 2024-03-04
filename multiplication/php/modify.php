@@ -22,7 +22,7 @@
             background: linear-gradient(135deg , #153677 , #4e085f);
             padding: 10px;
         }
-        .form{
+        form{
             width:100%;
             max-width: 540px;
             background: #ffffff;
@@ -31,13 +31,13 @@
             border-radius: 30px;
             box-shadow: #000 5px 5px 40px;
         }
-        .form h2{
+        form h2{
             color: #002765;
             display: flex;
             align-items: center;
             margin-bottom: 20px;
         }
-        .form p{
+        form p{
             margin :20px auto 0;
         }
         .row{
@@ -68,6 +68,9 @@
             cursor:pointer;
             border-radius: 40px;
         }
+        .k{
+            opacity:0;
+        }
         .container_button{
             display: flex;
             justify-content: center;
@@ -78,26 +81,25 @@
 <body>
     <div class="container">
         <?php
-            $a=$_GET["na"];
+            $a=$_GET["a"];
             $c=$_GET["c"];
-            $url = $_SERVER['REQUEST_URI'];
-            parse_str(parse_url($url, PHP_URL_QUERY), $new_params);
-            echo " <div class=\"form\">
-                        <h2>Modifier</h2>
-                        <p>Remplacer ici A</p>
-                        <input type=\"number\" name=\"a\" value=\"$a\" placeholder=\"Entier\">
-                        <p>Remplacer ici C</p>
-                        <input type=\"number\" name=\"b\" value=\"$c\" placeholder=\"Entier\">
-                        <div class=\"container_button\">
-                            <a href=\"http://www.multiplication.com\">
-                                <button type=\"submit\">
-                                    Changer
-                                </button>
-                            </a>
-                        </div>
+            $k=$_GET["k"];
+            echo "<form action=\"./table_for_modify.php\" method=\"GET\">
+                    <h2>Modifier</h2>
+                    <input type=\"number\" name=\"k\" value=\"$k\" readonly class=\"k\">
+                    <p>Remplacer ici C</p>
+                    <input type=\"number\" name=\"c\" value=\"$c\" placeholder=\"Entier\">
+                    <p>Remplacer ici A</p>
+                    <input type=\"number\" name=\"a\" value=\"$a\" placeholder=\"Entier\">
+                    <div class=\"container_button\">
+                        <button type=\"submit\">
+                            Changer
+                        </button>
                     </div>
-                ";
-                    
+                </form>";
+
+
+            
         ?>
     </div>
 </body>

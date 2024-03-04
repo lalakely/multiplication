@@ -1,22 +1,29 @@
 <?php
-    $k=$_GET["k"];
-    $url = $_SERVER['REQUEST_URI'];
-    parse_str(parse_url($url, PHP_URL_QUERY), $params);
-    //Élimine l'élément avec clé k 
-    unset($params["k"]);
-    unset($params[$k - 1]);
-    $queryString = http_build_query($params);
-    $baseUrl = 'calcul.php';
-    $new_url = $baseUrl .'?'.$queryString;
-    
-    /// Pour les tableaux à deux dimensions
-    // $url = $_SERVER['REQUEST_URI'];
-    // parse_str(parse_url($url, PHP_URL_QUERY), $donnees);
-    // unset($donnees["k"]);
-    // unset($donnees[$k]);
-    // $requete_get = http_build_query(array("tab" => $donnees));
-    //  echo $requete_get;
-    // print_r($donnees);
-     header("Location: " . $new_url);
-     exit();
+$k = $_GET["k"];
+
+// Chemin vers le fichier
+$file = './file';
+
+// Lire le contenu du fichier
+$lines = file($file);
+
+// Vérifier si la ligne à supprimer existe
+if (isset($lines[$k])) {
+    // Supprimer la ligne du tableau
+    unset($lines[$k]);
+
+    // Réécrire le contenu mis à jour dans le fichier
+    file_put_contents($file, implode('', $lines));
+
+    echo "La ligne $k a été supprimée du fichier.";
+} else {
+    echo "La ligne $k n'existe pas dans le fichier.";
+}
+$baseUrl = 'calcul.php';
+$new_url = $baseUrl . '?';
+header("Location: " . $new_url);
+
+exit();
 ?>
+
+
